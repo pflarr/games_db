@@ -1,0 +1,22 @@
+<form action="{% url 'games_tracker:game_request' gametb.id %}" method="post">
+{% csrf_token %}
+<select name="event_name">
+{% for event in events %}
+    <option value="{% event.id %}">{% event.name %}</option>
+{% endfor %}
+</select>
+<input type="text" name="game" id="game">
+<input type="text" name="requester" id="requester">
+<input type="text" name="comment" id="comment">
+</form>
+
+{% if games_list %}
+    <ul>
+    {% for game in games_list %}
+        <li>{{game.game}}, {{game.requester}}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No games in db.</p>
+{% endif %}
+
