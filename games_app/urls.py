@@ -1,8 +1,8 @@
 from django.conf.urls import patterns, url
 
-from games_tracker import views
+from games_app import views
 
 urlpatterns = patterns('',
-    url(r'^$', views.games_list, name='games_list'),
-    url(r'^game_request/$', views.game_request, name='game_request')
+    url(r'^(?P<ev>\d+)/$', views.index, name='index'),
+    url(r'^(?P<ev>\d+)/add_req/$', views.add_req, name='add_game_request')
 )
