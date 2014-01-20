@@ -1,8 +1,8 @@
-<form action="{% url 'games_tracker:game_request' gametb.id %}" method="post">
+<form action="{% url 'games_app:add_req' event.id %}" method="post">
 {% csrf_token %}
 <select name="event_name">
-{% for event in events %}
-    <option value="{% event.id %}">{% event.name %}</option>
+{% for ev in events %}
+    <option value="{{ev.id}}">{{ev.name}}</option>
 {% endfor %}
 </select>
 <input type="text" name="game" id="game">

@@ -6,7 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^games/', include('games_app.urls')),
+    url(r'^games/', include('games_app.urls', namespace='games_app')),
     # Examples:
     # url(r'^$', 'games_db.views.home', name='home'),
     # url(r'^games_db/', include('games_db.foo.urls')),
