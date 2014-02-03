@@ -1,7 +1,7 @@
 from django.db import models
 
 class Event(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, verbose_name='Event')
     added = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
         return '<Event: %s>' % self.name
