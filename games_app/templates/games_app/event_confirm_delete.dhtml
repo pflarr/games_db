@@ -1,0 +1,14 @@
+{% block title %}{{ form_title }} {% endblock %}
+<p>
+{% block body_content %}
+<h3>
+Delete event <b>{{ object.name }}</b>?
+</h3>
+<form action="" method="post">
+{% csrf_token %}
+<input type="submit" 
+    value="Yes"
+    name="delete" />
+</form>
+{% endblock %}
+
