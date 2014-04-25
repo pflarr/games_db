@@ -9,13 +9,16 @@ from django_tables2 import RequestConfig, SingleTableMixin
 from games_app.models import Game, Event
 from games_app.tables import EventTable, RequestedGamesTable
 from games_app.tables import ConfirmedGamesTable
-from games_app.forms import EventForm
+from games_app.forms import EventForm, GameReqFormset 
+
+import json
 
 def games_list(request, ev=None):
     if ev is not None:
         event = get_object_or_404(Event, pk=ev)
     else:
         event = Event.objects.order_by('added')[0]
+    events = Event.objects.order_by('added')
     games = Game.objects.all().filter(event__exact=event)
     games_requested = games.filter(bringer__exact='')
     games_confirmed = games.exclude(bringer__exact='')
@@ -25,7 +28,9 @@ def games_list(request, ev=None):
     RequestConfig(request).configure(req_table)
     RequestConfig(request).configure(conf_table)
    
-    return render(request, template, {'req_table': req_table,
+    return render(request, template, {'events': events,
+                                      'event': event,
+                                      'req_table': req_table,
                                       'conf_table': conf_table})
 
 def event_list(request):
@@ -52,3 +57,19 @@ class DeleteEvent(DeleteView):
     success_url = reverse_lazy('events')
     template_name = "games_app/event_confirm_delete.dhtml"
 
+def games_req(request, ev):
+    event = get_object_or_404(Event, pk=ev) 
+    if request.method == 'POST':
+        formset = GameReqFormset(request.POST, request.FILES)
+        for game_req in formset:
+            game_req.is_valid()
+            game = game_req.cleaned_data.get('game')
+            comment = game_req.cleaned_data.get('comment')
+            bringing = game_req.cleaned_data.get('bringing')
+            if game:
+                game_entry = Game(event=event, name=game, bringer='pflarr', requester='somebody')
+                game_entry.save()
+    else:
+        formset = GameReqFormset()
+
+    return render(request, 'games_app/req.dhtml', {'event':event, 'formset':formset})

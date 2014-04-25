@@ -3,13 +3,27 @@
 
 <html>
 <head>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}django_tables2/themes/paleblue/css/screen.css">
+    <script type="text/javascript">
+    function select_event() {
+        document.location.href = $('#event_select option:selected').val();
+    }
+    </script>
 </head>
 <body>
-    <a href="{% url 'events' %}">Manage Events</a>
+    <div id="event_select">
+        <select name="cur_event" onchange="select_event()">
+          {% for ev in events %}
+            <option value="{% url 'games' ev.pk %}" {% if ev.pk == event.pk %}selected{%endif%}>{{ ev.name }}</option>
+          {% endfor %}
+        </select>
+        <a href="{% url 'events' %}">Manage Events</a>
+    </div>
     <p>
         {% render_table req_table %}
     </p>
+    <a href="{% url 'games_req' event.id %}">Add Requests</a>
     <p>
         {% render_table conf_table %}
     </p>
