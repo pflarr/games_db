@@ -22,7 +22,7 @@ def games_list(request, ev=None):
     games = Game.objects.all().filter(event__exact=event)
     games_requested = games.filter(bringer__exact='')
     games_confirmed = games.exclude(bringer__exact='')
-    template = 'games_app/games.dhtml'
+    template = 'games_app/games.html'
     req_table = RequestedGamesTable(games_requested, prefix="req-")
     conf_table = ConfirmedGamesTable(games_confirmed, prefix="conf-")
     RequestConfig(request).configure(req_table)
@@ -40,7 +40,7 @@ def event_list(request):
 
     event_form = EventForm()
 
-    return render(request, 'games_app/events.dhtml', {'events':table,
+    return render(request, 'games_app/events.html', {'events':table,
                                                       'form':event_form}) 
 
 class CreateEvent(CreateView):
@@ -50,12 +50,12 @@ class CreateEvent(CreateView):
 class UpdateEvent(UpdateView):
     model = Event
     success_url = reverse_lazy('events')
-    template_name = "games_app/event_edit.dhtml"
+    template_name = "games_app/event_edit.html"
 
 class DeleteEvent(DeleteView):
     model = Event
     success_url = reverse_lazy('events')
-    template_name = "games_app/event_confirm_delete.dhtml"
+    template_name = "games_app/event_confirm_delete.html"
 
 def games_req(request, ev):
     event = get_object_or_404(Event, pk=ev) 
@@ -72,4 +72,4 @@ def games_req(request, ev):
     else:
         formset = GameReqFormset()
 
-    return render(request, 'games_app/req.dhtml', {'event':event, 'formset':formset})
+    return render(request, 'games_app/req.html', {'event':event, 'formset':formset})

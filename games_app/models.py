@@ -1,11 +1,14 @@
 from django.db import models
 
+
 class Event(models.Model):
     name = models.CharField(max_length=30, verbose_name='Event')
     when = models.DateField()
     added = models.DateTimeField(auto_now_add=True)
+
     def __unicode__(self):
         return '<Event: %s>' % self.name
+
 
 class Game(models.Model):
     event = models.ForeignKey(Event)
@@ -19,7 +22,8 @@ class Game(models.Model):
 
     class Meta:
         unique_together = (('name','event'),)
-   
+
+
 class Comment(models.Model):
     game = models.ForeignKey(Game)
     comm_txt = models.CharField(max_length=80)
@@ -27,8 +31,8 @@ class Comment(models.Model):
     def __unicode__(self):
         return "<GameComment: %s, %s>" % (self.ame, self.comm_txt)
 
+
 class Player(models.Model):
     game = models.ForeignKey(Game)
     event = models.ForeignKey(Event)
-    who = models.CharField(max_length=20) 
-    
+    who = models.CharField(max_length=20)
